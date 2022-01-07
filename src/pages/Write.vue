@@ -1,13 +1,15 @@
 <template>
   <div class="markdown">
     <div class="titles">
-      <span>
-        <el-col :span="5">
+
+      <span class="sp-1">
+        <el-col :span="12">
           <el-input v-model="tit" placeholder="请输入您的题目"></el-input>
         </el-col>
       </span>
-      <span>
-        <el-select v-model="value1" multiple placeholder="请选择">
+
+      <span class="sp-2">
+        <el-select v-model="categorys" multiple placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -16,7 +18,7 @@
           ></el-option>
         </el-select>
       </span>
-      <span>
+      <span class="sp-3">
         <el-button class="btn" @click="submit" type="primary" plain>提交</el-button>
       </span>
     </div>
@@ -26,9 +28,8 @@
         :ishljs="true"
         v-model="content"
         ref="md"
-        @imgAdd="$imgAdd"
         @change="change"
-        style="min-height: 90vh"
+        style="min-height: 80vh"
       />
     </div>
     <!-- <el-button class="btn" @click="submit" type="primary" plain>提交</el-button> -->
@@ -54,130 +55,128 @@ export default {
       configs: {},
       options: [
         {
-          value: "选项1",
-          label: "HTML",
+          value: "HTML/css",
+          label: "HTML/css",
         },
         {
-          value: "选项2",
-          label: "css",
-        },
-        {
-          value: "选项3",
+          value: "JavaScript",
           label: "JavaScript",
         },
         {
-          value: "选项4",
-          label: "vue",
+          value: "框架/库",
+          label: "框架/库",
         },
         {
-          value: "选项5",
-          label: "react",
+          value: "算法/数据结构",
+          label: "算法/数据结构",
         },
         {
-          value: "选项6",
+          value: "后端",
           label: "后端",
         },
         {
-          value: "选项7",
-          label: "数据库",
+          value: "设计",
+          label: "设计",
         },
         {
-          value: "选项8",
-          label: "UI",
+          value: "学习/生活",
+          label: "学习/生活",
         },
         {
-          value: "选项9",
+          value: "其他",
           label: "其他",
         },
       ],
-      value1: [],
+      categorys: [],
     };
   },
-  methods: {
-    // 将图片上传到服务器，返回地址替换到md中
-    // 绑定@imgAdd event
-    $imgAdd(pos, $file) {
-      // 第一步.将图片上传到服务器.
-      var formdata = new FormData();
-      formdata.append("image", $file);
-      axios({
-        url: "server url",
-        method: "post",
-        data: formdata,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((url) => {
-        // 第二步.将返回的url替换到文本原位置![...](./0) -> ![...](url)
-        /**
-         * $vm 指为mavonEditor实例，可以通过如下两种方式获取
-         * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
-         * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
-         */
-        $vm.$img2Url(pos, url);
-      });
+   computed:{
+    username() {
+     const username =this.$store.getters.user.name;
+     return username
     },
-
-    // 所有操作都会被解析重新渲染
+    category(){
+      return this.categorys
+    }
+  },
+  methods: {
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
       this.html = render;
     },
     // 提交
+    // submit(){
+    //   this.$axios.get('api/articles/test').then(res=>{
+    //     console.log(res.data)
+    //   })
+    // },
     submit() {
       let aData = new Date();
       let value =
-        aData.getFullYear() +
-        "-" +
-        (aData.getMonth() + 1) +
-        "-" +
-        aData.getDate();
-      this.axios
-        .post("/api/saveArticle", {
-          title: this.tit,
-          date: value,
-          content: this.html,
+        aData.getFullYear() +"-" +(aData.getMonth()+1) +"-" +aData.getDate();
+        // console.log(value)
+      this.$axios
+        .post("api/articles/add", {
+          "author_name":this.username, 
+          "category":this.category,
+          "title":this.tit,
+          "date": value,
+          "content": this.html,
+          "summary":this.content
         })
-        .then((res) => {
-          // console.log(res.data);
-          console.log("图片上传成功！");
+        .then(res=> {
+          console.log(res);
+          console.log("上传成功！");
         });
-      console.log(value);
-      console.log(this.content);
-      console.log(this.html);
-      this.$message.success("提交成功，已打印至控制台！");
+
+      // console.log(this.username)
+      // console.log(this.category)
+      // console.log(value);
+      // console.log(this.content);
+      // console.log(this.html);
+      // this.$message.success("提交成功，已打印至控制台！");
     },
   },
-  mounted() {},
+ 
 };
 </script>
 
 <style lang="less">
+.markdown{ 
+  .titles{
+    padding: 30px;
+    width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    .sp-1{
+      flex: 4;
+      .el-col{
+        width: 60%;
+      }
+    }
+     .sp-2{
+       flex: 3;
+       .el-select{
+         width: 70%;
+       }
+     }
+      .sp-3{
+        justify-content: right;
+        flex: 1;
+      }
+    .span{
+      min-width: 300px;
+      flex: 1;
+    }
+
+  }
 .markdown-body {
-  //  编写容器的一些css，根据需要进行调整，这里是我博客的，在github提供的.markdown-body基础上修改的
   box-sizing: border-box;
   min-width: 200px;
-  // max-width: 90%;
-  margin: 0 auto;
-  box-shadow: 2px 4px 6px gray;
-  // padding-left: 20px;
-  // padding-right: 15px;
-  padding-top: 40px;
-  // padding-bottom: 45px;
-  // margin-bottom: 100px;
-}
-
-//github使用的是这个   根据自己的进行调整
-.markdown-body {
-  box-sizing: border-box;
-  // min-width: 200px;
-  // max-width: 980px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 45px;
 }
 
-//这个要配合移动端 不是很理解
-@media (max-width: 767px) {
-  .markdown-body {
-    padding: 15px;
-  }
 }
 </style>

@@ -34,24 +34,24 @@ export default {
       imgList: [
         {
           id: 0,
-          idView: require("../../../static/navimg/bc1.jpg"),
+          idView:"https://pic1.zhimg.com/80/v2-80164e3d80a76b0ded0dbc0f8f075ea6_720w.jpg?source=1940ef5c",
         },
 
         {
           id: 1,
           name: "详情",
-          idView: require("../../../static/navimg/bc1.jpg"),
+          idView:"https://pic1.zhimg.com/80/v2-fd090cbaebfa92bfd607c62b82be11f3_720w.jpg?source=1940ef5c",
         },
 
         {
           id: 2,
           name: "推荐",
-          idView: require("../../../static/navimg/bc1.jpg"),
+          idView:"https://pic4.zhimg.com/80/v2-05ec551e777b1204077f3e1c8f86a498_720w.jpg?source=1940ef5c",
         },
 
         {
           id: 3,
-          idView: require("../../../static/navimg/bc1.jpg"),
+          idView:"https://pic4.zhimg.com/80/v2-24167fb0226519f8f8b28df24eb81e8c_720w.jpg?source=1940ef5c",
         },
       ],
     };

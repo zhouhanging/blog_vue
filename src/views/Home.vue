@@ -4,8 +4,8 @@
       <Advert />
     </div>
     <div class="homes">
-      <div class="article">
-        <Article />
+      <div class="articles">
+        <article-part />
         <!-- <SignIn /> -->
       </div>
       <div class="side">
@@ -17,13 +17,13 @@
 
 <script>
 import Advert from "../components/advert/Advert.vue";
-import Article from "../components/Article/Article.vue";
+import ArticlePart from "../components/Article/ArticlePart.vue";
 import Side from "../components/Side/Side.vue";
 
 export default {
   name: "Home",
   components: {
-    Article,
+    ArticlePart,
     Side,
     Advert,
   },
@@ -35,7 +35,7 @@ export default {
   min-width: 1300px;
   .hang {
     width: 70%;
-    margin: 20px auto;
+    margin: 18px auto;
   }
   .homes {
     justify-content: space-between;
@@ -43,7 +43,7 @@ export default {
     width: 70%;
     display: flex;
     box-sizing: border-box;
-    .article {
+    .articles {
       background-color: #fff;
       width: 68%;
     }

@@ -12,14 +12,13 @@
         <el-menu-item index="1">
           <router-link to="/home">首页</router-link>
         </el-menu-item>
-
         <el-menu-item index="2">
           <router-link to="/about">话题</router-link>
         </el-menu-item>
-
         <el-menu-item index="3">
           <router-link to="/topic">资源</router-link>
         </el-menu-item>
+
       </el-menu>
 
       <el-menu class="right">
@@ -36,9 +35,27 @@
 
         <el-button @click="towr" icon="el-icon-search" type="primary">写</el-button>
 
-        <el-button @click="todeng" type="primary">登录</el-button>
+        <el-button v-if="!isLogin"  @click="todeng" type="primary">登錄</el-button>
+
+        <!-- <el-avatar  style="margin:10px 5px" v-if="!isLogin" :size="38" :src="circleUrl"></el-avatar> -->
+          <span class='username' v-if="isLogin">
+              <el-dropdown
+                  trigger="click"
+                  @command='setDialogInfo'>
+                  <span class="el-dropdown-link">
+                      <el-avatar  style="margin:10px 5px"  :size="38" :src="user.avatar ?user.avatar : circleUrl"></el-avatar>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item command='info'>主页</el-dropdown-item>
+                      <el-dropdown-item  command='logout'>退出</el-dropdown-item>
+                  </el-dropdown-menu>
+              </el-dropdown>
+          </span>
+
       </el-menu>
+
     </el-menu>
+
   </div>
 </template>
 
@@ -48,28 +65,76 @@ export default {
     return {
       activeIndex: "1",
       activeIndex2: "1",
-      restaurants: [],
+      searchKey: [],
       state1: "",
+      circleUrl: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=306993806,2711758221&fm=26&gp=0.jpg",
     };
+  },
+  computed: {
+    user() {
+      const islogin =this.$store.getters.user;
+      return islogin
+    },
+    isLogin(){
+     return localStorage.eleToken ? true : false;
+    }
+    // img(){
+    //    let imgmail=this.user.email
+    //   let qqnum=parseInt(imgmail);
+    //   this.$axios.get('/qqmsg.php',{
+    //     params:{qq:qqnum} }).then(
+    //       res=>{
+    //         return res.headimg
+    //       }
+    //     ).catch(
+    //       error=>{console.log(error)}
+    //     )
+    // }
   },
   methods: {
     toin() {
       this.$router.push("/");
     },
     towr() {
+       //跳转写博客
       this.$router.push("/write");
     },
     todeng() {
-      this.$router.push("/sign");
+      //跳转登录
+      this.$router.push("/login");
     },
+    logout() {
+    // 清除token
+    localStorage.removeItem("eleToken");
+    this.$store.dispatch("clearCurrentState");
+    // 页面跳转
+    this.$router.push("/");
+    },
+     setDialogInfo(cmditem) {
+      if (!cmditem) {
+        console.log("test");
+        this.$message("菜单选项缺少command属性");
+        return;
+      }
+      switch (cmditem) {
+        case "info":
+          console.log(this.user)
+          this.toin();
+          break;
+        case "logout":
+          this.logout();
+          break;
+      }
+    },
+
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants;
+      var searchKey = this.searchKey;
       var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants;
+        ? searchKey.filter(this.createFilter(queryString))
+        : searchKey;
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
@@ -83,70 +148,10 @@ export default {
     },
     loadAll() {
       return [
-        { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
-        {
-          value: "Hot honey 首尔炸鸡（仙霞路）",
-          address: "上海市长宁区淞虹路661号",
-        },
-        {
-          value: "新旺角茶餐厅",
-          address: "上海市普陀区真北路988号创邑金沙谷6号楼113",
-        },
-        { value: "泷千家(天山西路店)", address: "天山西路438号" },
-        { value: "贡茶", address: "上海市长宁区金钟路633号" },
-        {
-          value: "豪大大香鸡排超级奶爸",
-          address: "上海市嘉定区曹安公路曹安路1685号",
-        },
-        {
-          value: "茶芝兰（奶茶，手抓饼）",
-          address: "上海市普陀区同普路1435号",
-        },
-        { value: "十二泷町", address: "上海市北翟路1444弄81号B幢-107" },
-        { value: "星移浓缩咖啡", address: "上海市嘉定区新郁路817号" },
-        { value: "阿姨奶茶/豪大大", address: "嘉定区曹安路1611号" },
-        { value: "新麦甜四季甜品炸鸡", address: "嘉定区曹安公路2383弄55号" },
-        { value: "枪会山", address: "上海市普陀区棕榈路" },
-        { value: "纵食", address: "元丰天山花园(东门) 双流路267号" },
-        { value: "钱记", address: "上海市长宁区天山西路" },
-        { value: "壹杯加", address: "上海市长宁区通协路" },
-        {
-          value: "开心丽果（缤谷店）",
-          address: "上海市长宁区威宁路天山路341号",
-        },
-        { value: "超级鸡车（丰庄路店）", address: "上海市嘉定区丰庄路240号" },
-        { value: "妙生活果园（北新泾店）", address: "长宁区新渔路144号" },
-        { value: "香宜度麻辣香锅", address: "长宁区淞虹路148号" },
-        {
-          value: "凡仔汉堡（老真北路店）",
-          address: "上海市普陀区老真北路160号",
-        },
-        { value: "港式小铺", address: "上海市长宁区金钟路968号15楼15-105室" },
-        { value: "蜀香源麻辣香锅（剑河路店）", address: "剑河路443-1" },
-        { value: "四海游龙（天山西路店）", address: "上海市长宁区天山西路" },
-        {
-          value: "樱花食堂（凌空店）",
-          address: "上海市长宁区金钟路968号15楼15-105室",
-        },
-        { value: "壹分米客家传统调制米粉(天山店)", address: "天山西路428号" },
-        {
-          value: "福荣祥烧腊（平溪路店）",
-          address: "上海市长宁区协和路福泉路255弄57-73号",
-        },
-        {
-          value: "速记黄焖鸡米饭",
-          address: "上海市长宁区北新泾街道金钟路180号1层01号摊位",
-        },
-        { value: "红辣椒麻辣烫", address: "上海市长宁区天山西路492号" },
-        {
-          value: "(小杨生煎)西郊百联餐厅",
-          address: "长宁区仙霞西路88号百联2楼",
-        },
-        { value: "阳阳麻辣烫", address: "天山西路389号" },
-        {
-          value: "南拳妈妈龙虾盖浇饭",
-          address: "普陀区金沙江路1699号鑫乐惠美食广场A13",
-        },
+        { value: "前端三年", address: "长宁区新渔路144号" },
+        { value: "泷千家", address: "天山西路438号" },
+
+    
       ];
     },
     handleSelect(item) {
@@ -154,21 +159,34 @@ export default {
     },
   },
   mounted() {
-    this.restaurants = this.loadAll();
+    this.searchKey = this.loadAll();
   },
 };
 </script>
 
 <style lang="less">
 .nav {
+  box-sizing: border-box;
+  z-index: 10;
+  position: fixed;
+  top: 0px;
   background-color: #ffffff;
   min-width: 800px;
   font-size: 28px;
   padding: 0;
   margin: 0;
   width: 100%;
-  height: 60px;
+  height: 66px;
+  a{
+    outline: none;
+    text-decoration: none;
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
   .el-menu {
+    box-sizing: border-box;
+    border: none;
     margin: 0 auto;
     width: 70%;
     display: flex;
@@ -177,7 +195,6 @@ export default {
       display: flex;
       margin: 0 30px;
     }
-
     .right {
       width: 50%;
       display: flex;
@@ -187,18 +204,23 @@ export default {
         .el-input {
           margin-top: 6px;
         }
+     
       }
       .el-button--primary {
-        height: 39px;
-        width: 80px;
+        height: 36px;
+        width: 70px;
         margin: auto 5px;
         text-align: center;
       }
-      // .el-button {
-      //   height: 38px;
-      //   text-align: center;
-      // }
+      .el-button {
+        height: 38px;
+        text-align: center;
+      }
+      .el-avater{
+        margin: 10px 5px;
+      }
     }
   }
+
 }
 </style>
