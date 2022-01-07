@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="hang">
-      <Topic />
+      <Advert />
     </div>
     <div class="homes">
       <div class="article">
@@ -16,27 +16,23 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import Topic from "./Topic.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
-import Article from "@/components/Article/Article.vue";
-import Side from "@/components/Side/Side.vue";
-// import SignIn from "@/components/Sign/SignIn.vue";
+import Advert from "../components/advert/Advert.vue";
+import Article from "../components/Article/Article.vue";
+import Side from "../components/Side/Side.vue";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
     Article,
     Side,
-    Topic,
-    // SignIn,
+    Advert,
   },
 };
 </script>
 
 <style lang="less">
 .home {
+  min-width: 1300px;
   .hang {
     width: 70%;
     margin: 20px auto;

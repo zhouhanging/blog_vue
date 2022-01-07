@@ -146,9 +146,7 @@ export default {
     },
     // <!--进入登录页-->
     gotoLogin() {
-      this.$router.push({
-        path: "/login",
-      });
+      this.$router.push({ path: "/home" });
     },
     // 验证手机号
     checkMobile(str) {

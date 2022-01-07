@@ -1,30 +1,7 @@
 <template>
   <div class="pic">
-    <div class="pics">
-      <div class="lun">
-        <el-carousel indicator-position="outside" height="400px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3>{{ item.url }}</h3>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-
-      <div class="win">
-        <div class="gol">
-          <a href="#">
-            <img src="../../static/navimg/p4.png" alt="#" />
-          </a>
-        </div>
-        <div class="daywork">
-          <a href="#">
-            <img
-              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2940457600,1737576896&fm=26&gp=0.jpg"
-              alt="#"
-            />
-          </a>
-        </div>
-      </div>
-    </div>
+    hello tipic
+    <p>{{tip}}</p>
   </div>
 </template>
 

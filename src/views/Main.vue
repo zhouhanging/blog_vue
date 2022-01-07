@@ -1,10 +1,8 @@
 <template>
   <div id="main">
-    <!-- <Index /> -->
-
     <el-container>
       <el-header class="header">
-        <Nav id="nav" />
+        <Nav />
       </el-header>
 
       <el-main class="section">
@@ -21,9 +19,7 @@
 </template>
 
 <script>
-// import About from "./About";
 import Nav from "../components/Navs/Nav";
-// import Home from "./Home";
 
 export default {
   name: "main",
@@ -42,22 +38,20 @@ export default {
   display: flex;
   padding: 0;
   margin: 0;
-  .header {
-    height: 60px;
-
-    #nav {
-      background-color: #ffffff;
-      flex-direction: column;
-      display: flex;
+  .el-container {
+    padding: 0;
+    margin: 0;
+    .el-header {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 60px;
     }
-  }
-  .section {
-    flex: 1;
-  }
-  .footer {
-    height: 100px;
-    width: 100%;
-    .foot {
+    .el-main {
+      flex: 1;
+    }
+
+    .el-footer {
       width: 100%;
       height: 100px;
       font-size: 30px;
@@ -65,6 +59,8 @@ export default {
       background-color: rgb(43, 43, 43);
       p {
         text-align: center;
+        margin: 0;
+        padding: 0;
       }
     }
   }
